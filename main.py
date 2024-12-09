@@ -19,9 +19,8 @@ async def root():
 
 @app.post("/test")
 async def test(request: Request):
-    # JSON 데이터를 dict 형태로 파싱
     body = await request.json()
-    test_value = body.get("test")  # "test" 값 가져오기
+    test_value = body.get("test")
     return {"message": f"Received: {test_value}"}
 
 @app.get("/hello/{name}")
