@@ -1,9 +1,10 @@
 from fastapi import FastAPI, Request
 from starlette.middleware.cors import CORSMiddleware
+from system.Config import dbms, database_read
+from src.Logger.Logger import Log
+from src.User.User import router as user_router
 
 app = FastAPI()
-
-
 app.add_middleware(
     CORSMiddleware,
     allow_origins=["http://localhost:5173"],
@@ -11,11 +12,15 @@ app.add_middleware(
     allow_methods=["*"],
     allow_headers=["*"],
 )
+
+app.include_router(user_router, prefix="/user")
+
 @app.get("/")
 async def root():
-    return {"message": "Hello World"}
-
-
+    client = dbms.client(database_read)
+    res = client.query("SELECT * FROM test")
+    Log(res)
+    return {"message": f"Hello World {res}"}
 
 @app.post("/test")
 async def test(request: Request):
