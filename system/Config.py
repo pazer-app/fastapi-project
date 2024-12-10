@@ -1,10 +1,52 @@
-from src.Database.DatabaseHost import DatabaseHost
-from src.Database.DatabaseManager import DatabaseManager
-dbms:DatabaseManager = DatabaseManager()
 LoggerEnable:bool = True
-database_read:str = "main_read"
-database_write:str = "main_write"
-__main_read:DatabaseHost = dbms.host(database_read)
-__main_read.setHost("localhost","master","expexp","master")
-__main_write:DatabaseHost = dbms.host(database_write)
-__main_write.setHost("localhost","master","expexp","master")
+SystemConfig:dict = {
+    "allow_cors" : True,
+    "allow_origins" : ["http://localhost:5173"],
+    "allow_credentials" : True,
+    "allow_methods" : ["*"],
+    "allow_headers" : ["*"],
+}
+SessionHostInfo:dict = {
+    "hostname" : "127.0.0.1",
+    "port" : 6379,
+    "namespace" : "test",
+    "decode" : True,
+}
+DatabaseHostInfo:dict = {
+    "main_read" : {
+        "hostname" : "localhost",
+        "username" : "master",
+        "password" : "test",
+        "database" : "master",
+        "port" : 3306,
+        "charset" : "utf8",
+    },
+    "main_write" : {
+        "hostname" : "localhost",
+        "username" : "master",
+        "password" : "test",
+        "database" : "master",
+        "port" : 3306,
+        "charset" : "utf8",
+    },
+    "auth_read" : {
+        "hostname" : "localhost",
+        "username" : "master",
+        "password" : "test",
+        "database" : "master",
+        "port" : 3306,
+        "charset" : "utf8",
+    },
+    "auth_write" : {
+        "hostname" : "localhost",
+        "username" : "master",
+        "password" : "test",
+        "database" : "master",
+        "port" : 3306,
+        "charset" : "utf8",
+    }
+}
+DB_AUTH_READ = "auth_read"
+DB_AUTH_WRITE = "auth_write"
+DB_MAIN_READ= "main_read"
+DB_MAIN_WRITE = "main_write"

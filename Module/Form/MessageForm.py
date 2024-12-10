@@ -19,25 +19,40 @@ class MessageForm:
         self.__message = None
         self.__security = False
         return self
-    def status(self, status:bool) -> "MessageForm":
+
+    def getStatus(self)->bool|None:
+        return self.__status
+    def getCode(self)->int|None:
+        return self.__code
+    def getData(self)->dict|None:
+        return self.__data
+    def getMessage(self)->str|None:
+        return self.__message
+    def getSecurity(self)->bool|None:
+        return self.__security
+    def getTimer(self)->bool:
+        return self.__timer
+    def getDate(self)->dict:
+        return self.__date
+    def status(self, status:bool)->"MessageForm":
         self.__status = status
         return self
-    def code(self, code:int) -> "MessageForm":
+    def code(self, code:int)->"MessageForm":
         self.__code = code
         return self
-    def data(self, data:dict|None = None) -> "MessageForm":
+    def data(self, data: dict | None = None)-> "MessageForm":
         self.__data = data
         return self
-    def message(self, message:str|None = None) -> "MessageForm":
+    def message(self, message:str|None = None)->"MessageForm":
         self.__message = message
         return self
-    def security(self, security:bool) -> "MessageForm":
+    def security(self, security:bool)->"MessageForm":
         self.__security = security
         return self
-    def timer(self, timer:bool) -> "MessageForm":
+    def timer(self, timer:bool)->"MessageForm":
         self.__timer = timer
         return self
-    def show(self) -> dict:
+    def show(self)->dict:
         res:dict = {}
         if self.__status is not None:
             res["status"] = self.__status

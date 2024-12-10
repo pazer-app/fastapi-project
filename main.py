@@ -1,33 +1,36 @@
 from fastapi import FastAPI, Request
-from starlette.middleware.cors import CORSMiddleware
-from system.Config import dbms, database_read
-from src.Logger.Logger import Log
-from src.User.User import router as user_router
-
-app = FastAPI()
-app.add_middleware(
-    CORSMiddleware,
-    allow_origins=["http://localhost:5173"],
-    allow_credentials=True,
-    allow_methods=["*"],
-    allow_headers=["*"],
-)
-
-app.include_router(user_router, prefix="/user")
-
+from Module.Database.DatabaseManager import DatabaseManager
+from Module.Form.MessageForm import MessageForm
+from Module.Logger.Logger import Logger
+from Module.Session.Session import Session
+from Module.Session.SessionAuth import SessionAuth
+from Module.Session.SessionFunc import authSave, authMode, authHeader
+from src.Router import Router
+from system.Store import Store
+from system.System import RunMain, RunConfig
+app:FastAPI = RunMain()
+store:Store = RunConfig()
+dbms:DatabaseManager = store.dbms()
+session:Session = store.session()
+logs:Logger = store.log()
+session.connect()
+Router(app)
 @app.get("/")
 async def root():
-    client = dbms.client(database_read)
-    res = client.query("SELECT * FROM test")
-    Log(res)
-    return {"message": f"Hello World {res}"}
-
-@app.post("/test")
-async def test(request: Request):
-    body = await request.json()
-    test_value = body.get("test")
-    return {"message": f"Received: {test_value}"}
-
-@app.get("/hello/{name}")
-async def say_hello(name: str):
-    return {"message": f"Hello {name}"}
+    authSave("kds","sdf123","kms")
+    form:MessageForm = MessageForm()
+    cm: SessionAuth = authMode("kds","sdf123")
+    if cm.status is True:
+        form.status(True).message("OK").data(cm.show()).timer(True)
+    return form.show()
+@app.get("/test")
+async def test(request:Request):
+    header:dict = authHeader(request)
+    print(header["sid"],header["token"])
+    form:MessageForm = MessageForm()
+    cm: SessionAuth = authMode(header["sid"],header["token"])
+    if cm.status is True:
+        form.status(True).message("OK").data(cm.show()).timer(True)
+    else:
+        form.status(False).message("ERROR").data(cm.show()).timer(False)
+    return form.show()

@@ -7,7 +7,7 @@ class DatabaseHost:
         self.__port:int = 3306
         self.__charset:str = "utf8mb4"
     # Host to Dict
-    def getData(self) -> dict:
+    def getData(self)->dict:
         return {
             "hostname":self.__hostname,
             "username":self.__username,
@@ -24,7 +24,7 @@ class DatabaseHost:
                 database:str,
                 port:int = 3306,
                 charset:str = "utf8mb4"
-                ) -> None:
+                )->None:
         self.__hostname = hostname
         self.__username = username
         self.__password = password
@@ -33,43 +33,43 @@ class DatabaseHost:
         self.__charset = charset
     # Hostname
     @property
-    def hostname(self) -> str:
+    def hostname(self)->str:
         return self.__hostname
     @hostname.setter
-    def hostname(self, hostname) -> None:
+    def hostname(self, hostname)->None:
         self.__hostname = hostname
     # Username
     @property
-    def username(self) -> str:
+    def username(self)->str:
         return self.__username
     @username.setter
-    def username(self, username) -> None:
+    def username(self, username)->None:
         self.__username = username
     # Password
     @property
-    def password(self) -> str:
+    def password(self)->str:
         return self.__password
     @password.setter
-    def password(self, password) -> None:
+    def password(self, password)->None:
         self.__password = password
     # Database
     @property
-    def database(self) -> str:
+    def database(self)->str:
         return self.__database
     @database.setter
-    def database(self, database) -> None:
+    def database(self, database)->None:
         self.__database = database
     # Port
     @property
-    def port(self) -> int:
+    def port(self)->int:
         return self.__port
     @port.setter
-    def port(self, port) -> None:
+    def port(self, port)->None:
         self.__port = port
     # Charset
     @property
-    def charset(self) -> str:
+    def charset(self)->str:
         return self.__charset
     @charset.setter
-    def charset(self, charset) -> None:
+    def charset(self, charset)->None:
         self.__charset = charset

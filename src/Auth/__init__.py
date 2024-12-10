@@ -1,9 +1,11 @@
 from fastapi import APIRouter
-from system.Config import database_read, dbms
+
+from system.Config import DB_AUTH_READ
 router = APIRouter()
 @router.get("/")
 async def read_users():
-    client = dbms.client(database_read)
+    from main import dbms
+    client = dbms.client(DB_AUTH_READ)
     res = client.query("SELECT * FROM test")
     print("[Data]",res)
     return {"message": f"Hello World {res}"}
