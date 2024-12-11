@@ -5,6 +5,48 @@ from src.User.UserForm import UserForm
 from system.Config import DB_USER_READ, DB_USER_WRITE
 from system.System import DBSpace
 
+def UserEmail()->bool:
+    return True
+def UserEmailAdd()->bool:
+    return True
+def UserEmailDelete()->bool:
+    return True
+def UserEmailSearch()->bool:
+    return True
+def UserEmailModify()->bool:
+    return True
+
+def UserId()->bool:
+    return True
+def UserIdAdd()->bool:
+    return True
+def UserIdDelete()->bool:
+    return True
+def UserIdSearch()->bool:
+    return True
+def UserIdModify()->bool:
+    return True
+
+def UserNick()->bool:
+    return True
+def UserNickAdd()->bool:
+    return True
+def UserNickDelete()->bool:
+    return True
+def UserNickSearch()->bool:
+    return True
+def UserNickModify()->bool:
+    return True
+
+def UserAdd()->bool:
+    return True
+def UserList()->bool:
+    return True
+def UserSearch()->bool:
+    return True
+def UserDelete()->bool:
+    return True
+
 def UserNo(no:int)->UserForm|None:
     database = DB_USER_READ
     query = f"SELECT `NO`,`NAME_FIRST`,`NAME_MID`,`NAME_LAST`,`NAME`,`SEX`,`CREATE`,`UPDATE`,`DELETE`,`STATUS` FROM {DBSpace("USER")} WHERE `NO` = %s limit 1"
@@ -38,37 +80,10 @@ def UserPassCheck(no:int, password:str)->None|bool:
 
 def UserPasswordChange(no:int, value:str)->None|bool:
     sec_pass: str = SecurityString(value)
-    return UserColumnsChange(no, "NAME", str(sec_pass))
+    return UserModify(no, "PASSWORD", str(sec_pass))
 
-def UserNameChange(no:int, value:str)->None|bool:
-    return UserColumnsChange(no, "NAME", str(value))
-
-def UserSexChange(no:int, value:int)->None|bool:
-    return UserColumnsChange(no, "SEX", str(value))
-
-def UserNameFirstChange(no:int, value:str)->None|bool:
-    return UserColumnsChange(no, "NAME_FIRST", str(value))
-
-def UserNameMidChange(no:int, value:str)->None|bool:
-    return UserColumnsChange(no, "NAME_MID", str(value))
-
-def UserNameLastChange(no:int, value:str)->None|bool:
-    return UserColumnsChange(no, "NAME_LAST", str(value))
-
-def UserStatusChange(no:int, value:int)->None|bool:
-    return UserColumnsChange(no, "STATUS", str(value))
-
-def UserCreateChange(no:int, value:float)->None|bool:
-    return UserColumnsChange(no, "STATUS", str(value))
-
-def UserUpdateChange(no:int, value:float)->None|bool:
-    return UserColumnsChange(no, "STATUS", str(value))
-
-def UserDeleteChange(no:int, value:float)->None|bool:
-    return UserColumnsChange(no, "STATUS", str(value))
-
-def UserColumnsChange(no:int, columns:str , value:str)->None|bool:
-    database = DB_USER_READ
+def UserModify(no:int, columns:str , value:str)->None|bool:
+    database = DB_USER_WRITE
     query = f"UPDATE {DBSpace("USER")} SET `{columns}` = %s WHERE (`NO` = %s )"
     param = [value, no]
     commit = True

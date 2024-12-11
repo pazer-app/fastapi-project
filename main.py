@@ -5,8 +5,6 @@ from Module.Form.MessageForm import MessageForm
 from Module.Logger.Logger import Logger
 from Module.Session.Session import Session
 from src.Router import Router
-from src.User.UserForm import UserForm
-from src.User.UserFunc import UserNo, UserNameChange, UserSexChange, UserStatusChange
 from system.Config import MESSAGE_RESPONSE
 from system.Store import Store
 from system.System import RunMain, RunConfig
@@ -22,14 +20,6 @@ Router(app)
 # MAIN - END
 
 # SCRIPT - START
-vm:UserForm = UserNo(10000001)
-print(vm.show())
-vp= UserStatusChange(10000001,0)
-if vp is not None:
-    if vp is True:
-        print("OK")
-    else:
-        print("None Change")
 
 # SCRIPT - END
 
