@@ -1,9 +1,9 @@
 class SessionHost:
     def __init__(self):
-        self.__hostname:str = "localhost"
-        self.__port:int = 6379
-        self.__namespace:str = "default"
-        self.__decode:bool = True
+        self.__hostname:str|None = None
+        self.__port:int|None = None
+        self.__namespace:str|None = None
+        self.__decode:bool|None = None
     # All Input
     def setHost(self, hostname:str, port:int, namespace:str, decode:bool = True)->None:
         self.__hostname = hostname
@@ -17,31 +17,36 @@ class SessionHost:
             "namespace" : self.__namespace,
             "decode" : self.__decode
         }
+    def clear(self)->None:
+        self.__hostname = None
+        self.__port = None
+        self.__namespace = None
+        self.__decode = None
     # Hostname
     @property
-    def hostname(self)->str:
+    def hostname(self)->str|None:
         return self.__hostname
     @hostname.setter
-    def hostname(self, hostname)->None:
+    def hostname(self, hostname:str|None = None)->None:
         self.__hostname = hostname
     # Port
     @property
-    def port(self)->int:
+    def port(self)->int|None:
         return self.__port
     @port.setter
-    def port(self, port)->None:
+    def port(self, port:int|None = None)->None:
         self.__port = port
     # Namespace
     @property
-    def namespace(self)->str:
+    def namespace(self)->str|None:
         return self.__namespace
     @namespace.setter
-    def namespace(self, namespace)->None:
+    def namespace(self, namespace:str|None = None)->None:
         self.__namespace = namespace
     # Decode
     @property
-    def decode(self)->bool:
+    def decode(self)->bool|None:
         return self.__decode
     @decode.setter
-    def decode(self, decode)->None:
+    def decode(self, decode:bool|None)->None:
         self.__decode = decode

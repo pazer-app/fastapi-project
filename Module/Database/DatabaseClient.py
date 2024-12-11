@@ -1,6 +1,7 @@
 import pymysql
 from Module.Database.DatabaseHost import DatabaseHost
 from Module.Form.MessageForm import MessageForm
+from Module.Form.MessageFormData import MessageFormData
 from Module.Logger.Logger import Logger
 from system.Config import LoggerEnable
 class DatabaseClient:
@@ -12,11 +13,9 @@ class DatabaseClient:
     def host(self)->DatabaseHost:
         return self.__host
     def connect(self)->bool:
-        self.log.info("Connecting to database")
         if self.__state and self.__client is not None:
             return True
         try:
-            print(self.__host.hostname)
             connection = pymysql.connect(
                 host=self.__host.hostname,
                 user=self.__host.username,
@@ -39,28 +38,30 @@ class DatabaseClient:
         self.__client = None
         self.__state = False
         return True
-    def query(self, query:str, param:list=None)->dict|None:
+    def query(self, query:str, param:list=None, commit:bool = False)->MessageForm|None:
         form = MessageForm()
         if self.connect():
             try:
                 with self.__client.cursor() as cursor:
                     form.clear()
-                    res:dict = {}
+                    res = MessageFormData()
                     cursor.execute(query, param or ())
+                    if commit:
+                        self.__client.commit()
                     results = cursor.fetchall()
-                    res["count"] = len(results)
-                    res["list"] = results
-                    res["rows"] = cursor.rowcount if cursor.rowcount is not None else 0
-                    res["id"] = cursor.lastrowid if cursor.lastrowid is not None else 0
-                    form.status(True).code(200).data(res).timer(True)
-                    return form.show()
+                    res.count = len(results)
+                    res.lists = results
+                    res.row = cursor.rowcount if cursor.rowcount is not None else 0
+                    res.id = cursor.lastrowid if cursor.lastrowid is not None else ""
+                    form.status(True).code(200).dataForm(res).execute(True).timerEnd()
+                    return form
             except pymysql.MySQLError as e:
                 form.clear()
-                form.status(False).code(e.args[0]).message(e.args[1]).timer(True)
-                return form.show()
+                form.status(False).code(e.args[0]).message(e.args[1]).execute(False).timerEnd()
+                return form
             finally:
                 self.close()
         else:
             form.clear()
-            form.status(False).code(500).message("Error Connection").timer(True)
-            return form.show()
+            form.status(False).code(500).message("Error Connection").execute(False).timerEnd()
+            return form
